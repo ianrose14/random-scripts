@@ -1,0 +1,11 @@
+#!/bin/bash
+
+BRANCH=`git branch 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/\1/'`
+COMMITLEN=`cat $1 | wc -c`
+
+if [[ "$BRANCH" == "master" ]]; then
+   if [[ "$COMMITLEN" -lt 10 ]]; then
+      echo "Sorry, commit message too short!"
+      	   exit 1
+	   fi
+fi
