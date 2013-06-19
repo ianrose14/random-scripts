@@ -6,11 +6,16 @@ import sys
 def main():
   args = sys.argv[1:]
   for arg in args:
-    # strip off any milliseconds, microseconds, etc. off the end
-    (sec, subsec) = (arg[:10], arg[10:])
+    if '.' in arg:
+      # if there is a decimal point, we assume it must be in units of "seconds"
+      (sec, subsec) = (arg, "")
+    else:
+      # strip off any milliseconds, microseconds, etc. off the end
+      (sec, subsec) = (arg[:10], arg[10:])
+
     d = datetime.datetime.fromtimestamp(float(sec))
     if len(subsec) > 0:
-      print "%s:%d" % (d, int(subsec))
+      print "%s.%d" % (d, int(subsec))
     else:
       print d
 
