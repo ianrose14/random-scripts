@@ -2,6 +2,14 @@
 
 import datetime
 import sys
+try:
+  import pytz
+except ImportError:
+  print >>sys.stderr, '-'*100
+  print >>sys.stderr, ' **** Looks like you are missing pytz; try `pip install pytz` or `easy_install pytz` ****'
+  print >>sys.stderr, '-'*100
+  print >>sys.stderr
+  raise
 
 def main():
   args = sys.argv[1:]
@@ -13,11 +21,14 @@ def main():
       # strip off any milliseconds, microseconds, etc. off the end
       (sec, subsec) = (arg[:10], arg[10:])
 
-    d = datetime.datetime.fromtimestamp(float(sec))
+    local = datetime.datetime.fromtimestamp(float(sec))
+    utc = datetime.datetime.fromtimestamp(float(sec), pytz.utc)
     if len(subsec) > 0:
-      print "%s.%d" % (d, int(subsec))
+      print '%s.%d local' % (local, int(subsec))
+      print '%s.%d UTC' % (utc, int(subsec))
     else:
-      print d
+      print '%s local' % local
+      print '%s UTC' % utc
 
 if __name__ == '__main__':
   main()
