@@ -24,8 +24,8 @@ def main():
     local = datetime.datetime.fromtimestamp(float(sec))
     utc = datetime.datetime.fromtimestamp(float(sec), pytz.utc)
     if len(subsec) > 0:
-      print '%s.%d local' % (local, int(subsec))
-      print '%s.%d UTC' % (utc, int(subsec))
+      print '%s.%s local' % (local, subsec)
+      print '%s.%s UTC' % (utc, subsec)
     else:
       print '%s local' % local
       print '%s UTC' % utc

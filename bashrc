@@ -106,7 +106,5 @@ export CLASSPATH=.:/usr/share/java/servlet-api-2.5.jar:$CLASSPATH
 
 export GOROOT=/usr/local/go
 export GOBIN=$GOROOT/bin
-export AWS_ACCESS_KEY_ID=AKIAJH5XF6WNK7OUNJMA
-export AWS_SECRET_ACCESS_KEY=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
 
 export PATH=$HOME/bin:$GOBIN:$PATH
