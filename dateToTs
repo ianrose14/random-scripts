@@ -3,6 +3,7 @@
 import datetime
 import sys
 import time
+import pytz
 
 def main():
     usage = "dateToTs YEAR MONTH DAY [HOUR [MINUTE [SECOND]]]"
