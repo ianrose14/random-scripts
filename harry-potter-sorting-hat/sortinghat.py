@@ -37,6 +37,13 @@ def run(stdscr):
   stdscr.keypad(True)
   curses.cbreak()
 
+  # first 2 are hard-coded
+  stdscr.getch()
+  play_mp3('hufflepuff.mp3')
+
+  stdscr.getch()
+  play_mp3('slytherin.mp3')
+
   for filename in next_file():
     stdscr.getch()
     play_mp3(filename)
