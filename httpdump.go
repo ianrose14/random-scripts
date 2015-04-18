@@ -19,7 +19,7 @@ func main() {
 	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
 		w.Header().Add("Content-Type", "text/plain")
 		printAndEcho(w, "Method: %s", r.Method)
-		printAndEcho(w, "URL: %s", r.Method)
+		printAndEcho(w, "URL: %s", r.URL)
 
 		for k, v := range r.Header {
 			printAndEcho(w, "headers[%q] = %v", k, v)
