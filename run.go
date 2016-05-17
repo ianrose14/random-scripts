@@ -1,4 +1,10 @@
+// Command run executes an arbitrary command, then prints the time taken and uses 'say' to anounce the results.
 package main
+
+// I find this useful when running long-running tests.  e.g.
+// go build -o <some dir on $PATH>/run run.go
+// run goapp test -tags appengine fs/frontend/whatever
+// (go check slack or whatever until hearing the "command complete" message)
 
 import (
 	"fmt"
