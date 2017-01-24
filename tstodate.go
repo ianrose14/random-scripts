@@ -45,7 +45,6 @@ func main() {
 			}
 		}
 
-		fmt.Println(t.Format(TimeFormat))
-		fmt.Println(t.In(time.UTC).Format(TimeFormat))
+		fmt.Println(t.Format(TimeFormat), " | ", t.In(time.UTC).Format(TimeFormat))
 	}
 }
