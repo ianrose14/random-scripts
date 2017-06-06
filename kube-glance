@@ -1,0 +1,74 @@
+#!/usr/bin/python2.7 -u
+
+#
+# IMPORTS
+#
+import ansi
+import json
+import os
+import re
+import subprocess
+import sys
+import time
+from argparse import ArgumentParser
+
+
+#
+# CONSTANTS
+#
+FMT='%20s %10s %10s %15s'
+
+
+#
+# MAIN
+#
+def main():
+  parser = ArgumentParser(description='Get the state of a GKE cluster, at a glance')
+  parser.add_argument('--cluster', default='cluster-1', help='What cluster')
+  parser.add_argument('--project', default=None, help='Google project')
+  args = parser.parse_args()
+
+  if args.project is None:
+    print >>sys.stderr, '--project is required'
+    sys.exit(1)
+
+  subprocess.check_call('gcloud --project %s container clusters get-credentials %s' % (args.project, args.cluster), shell=True)
+
+  out = subprocess.check_output('kubectl get hpa -o json', shell=True)
+  hpas = json.loads(out)
+
+  out = subprocess.check_output('kubectl get deployments -o json', shell=True)
+  depls = json.loads(out)
+
+  print ansi.format(FMT % ('app', 'desired', 'available', 'maxReplicas'), ['white', 'bold'])
+
+  for item in depls['items']:
+    name = item['metadata']['name']
+    app = item['metadata']['labels'].get('app')
+    if not app:
+      raise StandardError('deployment %s has no "app" label?' % name)
+
+    desired = item['status']['replicas']
+    available = item['status'].get('availableReplicas', 0)
+    maxReplicas = None
+
+    for hpa in hpas['items']:
+      if hpa['spec']['scaleTargetRef']['name'] == name:
+        maxReplicas = hpa['spec']['maxReplicas']
+        break
+
+    color = 'green'
+    if available == 0:  # no replicas!
+      color = 'red'
+    elif available < desired:  # possible failure to scale up
+      color = 'yellow'
+    elif (maxReplicas) and (desired == maxReplicas):  # has reached maxReplicas
+      color = 'yellow'
+
+    if maxReplicas:
+      print ansi.format(FMT % (app, str(desired), str(available), str(maxReplicas)) , [color, 'bold'])
+    else:
+      print ansi.format(FMT % (app, str(desired), str(available), '-') , [color, 'bold'])
+
+if __name__ == '__main__':
+  main()
