@@ -2,5 +2,5 @@
 
 all: run
 
-run: run.go
-	go build -o run run.go
+%: %.go
+	go build -o $@ $<
