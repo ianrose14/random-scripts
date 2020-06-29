@@ -2,14 +2,14 @@
 	<head>
 	</head>
 	<body>
+		<script>
+			console.log('before loading exception.js');
+		</script>
 		<p>start</p>
 		<script src="exception.js"></script>
 		<p>end</p>
 		<script>
-			console.log('before bar');
-			y = 5;
-//			y.bar();
-			console.log('after bar');
+			console.log('after loading exception.js');
 		</script>
 	</body>
 </html>
