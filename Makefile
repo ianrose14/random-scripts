@@ -1,6 +1,6 @@
-.PHONY: all run
+.PHONY: all
 
-all: run
+all: tstodate datetots run
 
 %: %.go
 	go build -o $@ $<
