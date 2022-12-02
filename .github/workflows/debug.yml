@@ -15,11 +15,13 @@ jobs:
     # for the issue_comments trigger, only run on PR comments, not issues (these both use the same trigger)
     if: ${{ !github.event.issue || github.event.issue.pull_request }}
     steps:
-      - name: Print2
+      - name: Print Issue
+        run: echo ${{ github.event.issue }}
+      - name: Print PR
         run: echo ${{ github.event.issue.pull_request }}
-      - name: Print2b
-        run: echo ${{ github.event.issue.pull_request && github.event.issue.number || github.event.pull_request.number }}
-      - name: Print2c
+      - name: Print Issue number
         run: echo ${{ github.event.issue.number }}
-      - name: Print3
+      - name: Print bare PR number
         run: echo ${{ github.event.pull_request.number }}
+      - name: Print effective PR number
+        run: echo ${{ github.event.issue.number || github.event.pull_request.number }}
