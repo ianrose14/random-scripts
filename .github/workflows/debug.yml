@@ -13,7 +13,7 @@ jobs:
     name: Debug Stuff
     runs-on: ubuntu-latest
     # for the issue_comments trigger, only run on PR comments, not issues (these both use the same trigger)
-    # if: ${{ !github.event.issue || github.event.issue.pull_request }}
+    if: ${{ !github.event.issue || github.event.issue.pull_request }}
     steps:
       - name: Print1
         run: echo ${{ github.event.issue }}
