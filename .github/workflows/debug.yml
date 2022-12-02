@@ -19,3 +19,11 @@ jobs:
         run: echo ${{ github.event.issue }}
       - name: Print2
         run: echo ${{ github.event.issue.pull_request }}
+      - name: Print2b
+        run: echo ${{ github.event.issue.pull_request && github.event.issue.pull_request.number || github.event.pull_request.number }}
+      - name: Print2c
+        run: echo ${{ github.event.issue.pull_request.number }}
+      - name: Print3
+        run: echo ${{ github.event.pull_request.number }}
+      - name: Print4
+        run: echo ${{ github.event.pull_request.number }}
