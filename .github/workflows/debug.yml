@@ -15,6 +15,12 @@ jobs:
     # for the issue_comments trigger, only run on PR comments, not issues (these both use the same trigger)
     if: ${{ !github.event.issue || github.event.issue.pull_request }}
     steps:
+      - name: Clone git repo
+        uses: actions/checkout@v2
+      - name: Checkout Pull Request
+        run: hub pr checkout ${{ github.event.issue.number || github.event.pull_request.number }}
+	env:
+	  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Print Issue
         run: echo ${{ github.event.issue }}
       - name: Print PR
