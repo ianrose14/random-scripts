@@ -15,12 +15,30 @@ jobs:
     # for the issue_comments trigger, only run on PR comments, not issues (these both use the same trigger)
     if: ${{ !github.event.issue || github.event.issue.pull_request }}
     steps:
-      - name: Clone git repo
-        uses: actions/checkout@v2
-      - name: Checkout Pull Request
-        run: hub pr checkout ${{ github.event.issue.number || github.event.pull_request.number }}
+      - name: Github API Request
+      	id: request
+        uses: octokit/request-action@v2.0.0
+        with:
+          route: ${{ github.event.issue.pull_request.url }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Get PR informations
+        id: pr_data
+        run: |
+          echo "::set-output name=branch::${{ fromJson(steps.request.outputs.data).head.ref }}"
+          echo "::set-output name=repo_name::${{ fromJson(steps.request.outputs.data).base.repo.full_name }}"
+          echo "::set-output name=repo_clone_url::${{ fromJson(steps.request.outputs.data).base.repo.clone_url }}"
+          echo "::set-output name=repo_ssh_url::${{ fromJson(steps.request.outputs.data).base.repo.ssh_url }}"
+      - name: Checkout PR Branch
+        uses: actions/checkout@v2
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          repository: ${{ github.repository }}
+          ref: ${{ steps.pr_data.outputs.branch }}
+      #- name: Checkout Pull Request
+      #  run: hub pr checkout ${{ github.event.issue.number || github.event.pull_request.number }}
+      #  env:
+      #    GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Print Issue
         run: echo ${{ github.event.issue }}
       - name: Print PR
