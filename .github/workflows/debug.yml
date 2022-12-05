@@ -16,7 +16,7 @@ jobs:
     if: ${{ !github.event.issue || github.event.issue.pull_request }}
     steps:
       - name: Github API Request
-      	id: request
+        id: request
         uses: octokit/request-action@v2.0.0
         with:
           route: ${{ github.event.issue.pull_request.url }}
